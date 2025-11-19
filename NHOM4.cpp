@@ -209,6 +209,27 @@ public:
     }
 };
 
+void readGraphFromFile(Graph &g, const string &filename) {
+    ifstream fin(filename);
+    if (!fin.is_open()) {
+        cerr << "Loi: khong mo duoc file " << filename << "\n";
+        return;
+    }
+    int n, m;
+    fin >> n >> m;
+    g.reset(n);
+    cout << "Doc " << m << " canh tu file...\n";
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        long long w;
+        fin >> u >> v >> w;
+        g.addEdge(u, v, w);
+    }
+    g.buildAdjListFromMatrix();
+    fin.close();
+    cout << "Da doc xong file.\n";
+}
+
 void printMenu() {
     cout << "\n====== PRIM MST - MENU ======\n";
     cout << "1. Nhap do thi (n m + m dong u v w)\n";
@@ -218,7 +239,8 @@ void printMenu() {
     cout << "5. Chay Prim (ma tran O(n^2))\n";
     cout << "6. Chay Prim (heap O(m log n))\n";
     cout << "7. Luu MST ra file\n";
-    cout << "8. Thoat\n";
+    cout << "8. Doc do thi tu file\n";  // Thêm dòng này
+    cout << "9. Thoat\n";
     cout << "Chon: ";
 }
 
@@ -311,6 +333,14 @@ int main() {
             cout << "Da luu MST vao file: " << fname << "\n";
         }
         else if (cmd == 8) {
+            cout << "Nhap ten file de doc: ";
+            string fname;
+            cin >> ws;
+            getline(cin, fname);
+            readGraphFromFile(g, fname);
+            hasGraph = true;
+        }
+        else if (cmd == 9) {
             cout << "Thoat chuong trinh. Bye!\n";
             break;
         }
